@@ -1,46 +1,52 @@
-const tyresRouter = require('express').Router()
-const Tyre = require('../models/tyre')
+const tyresRouter = require("express").Router();
+const Tyre = require("../models/tyre");
 
-tyresRouter.get('/', (request, response, next) => {
-  Blog
-    .find({})
-    .then(tyres => {
-      response.json(tyres)
+tyresRouter.get("/", (request, response, next) => {
+  Tyre.find({})
+    .then((tyres) => {
+      response.json(tyres);
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-tyresRouter.post('/', (request, response, next) => {
-  const body = request.body
-  const tyre = new Tyre ({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  })
+tyresRouter.post("/", (request, response, next) => {
+  const body = request.body;
+  const tyre = new Tyre({
+    hinta: body.hinta,
+    koko: body.koko,
+    malli: body.malli,
+    merkki: body.merkki,
+    rengasID: body.rengasID,
+    saldo: body.saldo,
+    tyyppi: body.tyyppi,
+  });
   tyre
     .save()
-    .then(result => {
-      response.status(201).json(result)
+    .then((result) => {
+      response.status(201).json(result);
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-tyresRouter.put('/:id', (request, response, next) => {
-  const { tyres } = request.body
-  Tyre.findByIdAndUpdate(request.params.id, { tyres }, { new: true, tyres: 'query' } )
-    .then(updatedTyres => {
-      response.json(updatedTyres)
+tyresRouter.put("/:id", (request, response, next) => {
+  const body = request.body;
+  const tyre = {
+    saldo: body.saldo,
+  };
+
+  Tyre.findByIdAndUpdate(request.params.id, tyre, { new: true })
+    .then((updatedTyre) => {
+      response.json(updatedTyre);
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-tyresRouter.delete('/:id', (request, response, next) => {
+tyresRouter.delete("/:id", (request, response, next) => {
   Tyre.findByIdAndRemove(request.params.id)
     .then(() => {
-      response.status(204).end()
+      response.status(204).end();
     })
-    .catch(error => next(error))
-})
+    .catch((error) => next(error));
+});
 
-module.exports = tyresRouter
+module.exports = tyresRouter;
